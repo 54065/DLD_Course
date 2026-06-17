@@ -21,6 +21,8 @@
 
 
 module INTRODUCTION_TO_DLD(
+input a,b 
+output c
 
     );
 endmodule
