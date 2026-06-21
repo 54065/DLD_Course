@@ -21,28 +21,34 @@
 
 
 module Digital_system(
-input power_in, manual_in, 
+input power_in, manual_in, clk, 
 input [6:0] temp_set,temp_sensor,
-output power_out, FAN
+output power_out, fan
     );
-reg FAN;   
     
-    assign power_out = power_in;   
-    always @ (power_in, temp_sensor, manual_in, temp_set) begin
+reg fan, state;   
+  
+    assign power_out = power_in;
+//    assign fan_in = state;    
+    always @(*) begin  // always @(*) //always @ (power_in, temp_sensor, manual_in, temp_set) 
         if (power_in) begin 
          
             if (temp_sensor >= temp_set || manual_in == 1) begin
-                FAN = 1;
+                state = 1;
                 end
             
             else begin
-            FAN = 0;
+            state = 0;
             end
         end
         
         else begin
-            FAN = 0;
+            state = 0;
         end
    end
-  
+   
+    always @ (posedge clk) begin
+        fan <= state;
+    end
+   
 endmodule
